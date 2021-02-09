@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\{HomeController, PaymentController};
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +16,24 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	return view('welcome');
 });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+Route::post(
+	'/payments/pay',
+	[PaymentController::class, 'pay']
+)->name('pay');
+
+Route::get(
+	'/payments/approval',
+	[PaymentController::class, 'approval']
+)->name('approval');
+
+Route::get(
+	'/payments/cancelled',
+	[PaymentController::class, 'cancelled']
+)->name('cancelled');

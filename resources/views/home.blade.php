@@ -8,7 +8,7 @@
 				<div class="card-header">{{ __('Dashboard') }}</div>
 
 				<div class="card-body">
-					<form action="#" method="POST" id="paymentForm">
+					<form action="{{ route('pay') }}" method="POST" id="paymentForm">
 						@csrf
 						<div class="row">
 							<div class="col-auto">
@@ -37,14 +37,14 @@
 									<p> {{ __('Select the desired payment platfrom:') }} </p>
 								</div>
 								<div class="btn-group btn-group-toggle" data-toggle="buttons">
-									@foreach ($paymentsPlatform as $paymentPlatform)
+									@foreach ($paymentPlatforms as $paymentPlatform)
 									<label class="btn btn-outline-secondary rounded m-2 p-1" data-toggle="collapse" data-target="#{{ $paymentPlatform->name }}">
 										<input type="radio" name="payment_platform" value="{{$paymentPlatform->id}}" required>
 										<img src="{{ asset($paymentPlatform->image) }}" class="img-thumbnail">
 									</label>
 									@endforeach
 								</div>
-								@foreach ($paymentsPlatform as $paymentPlatform)
+								@foreach ($paymentPlatforms as $paymentPlatform)
 								<div id="{{ $paymentPlatform->name }}" class="collapse" data-parent="#toggler">
 									@includeIf('components.' . strtolower($paymentPlatform->name))
 								</div>

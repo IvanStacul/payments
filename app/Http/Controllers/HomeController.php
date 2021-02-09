@@ -26,7 +26,7 @@ class HomeController extends Controller
 	public function index()
 	{
 		$currencies = Currency::all();
-		$paymentsPlatform = PaymentPlatform::all();
-		return view('home', compact('currencies','paymentsPlatform'));
+		$paymentPlatforms = PaymentPlatform::all();
+		return view('home', compact('currencies','paymentPlatforms'));
 	}
 }
