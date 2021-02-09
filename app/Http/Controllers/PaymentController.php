@@ -11,7 +11,7 @@ class PaymentController extends Controller
 		$rules = [
 			'value' => 'numeric|required|min:5',
 			'currency' => 'required|exists:currencies,iso',
-			'payment_platform' => 'required|exists:payment_platforms,iso',
+			'payment_platform' => 'required|exists:payment_platforms,id',
 		];
 
 		$request->validate($rules);
