@@ -50,8 +50,34 @@ class PayPalService
 		// Buscamos el link para aprobar el pago
 		$approve = $orderLinks->where('rel', 'approve')->first();
 
+		// Antes de redirigir guardamos el id de la orden para
+		// manejarla cuando se aprueba
+		session()->put('approvalId', $order->id);
+
 		// Redirigimos al usuario al link para que nos apruebe el pago
 		return redirect($approve->href);
+	}
+
+	public function handleApproval()
+	{
+		if (session()->has('approvalId')) {
+			$approvalId = session()->get('approvalId');
+
+			$payment = $this->capturePayment($approvalId);
+
+			$name = $payment->payer->name->given_name;
+			$payment = $payment->purchase_units[0]->payments->captures[0]->amount;
+			$amount = $payment->value;
+			$currency = $payment->currency_code;
+
+			return redirect()
+				->route('home')
+				->withSuccess(['payment' => "Gracias, {$name}. Recibimos tu  pago de {$amount} {$currency}."]);
+		}
+
+		return redirect()
+			->route('home')
+			->withErrors('No pudimos capturar tu pago. Por favor, intente nuevamente.');
 	}
 
 	public function createOrder($value, $currency)

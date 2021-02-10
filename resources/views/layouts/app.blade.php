@@ -101,9 +101,8 @@
 
 				@if (session()->has('success'))
 				<div class="alert alert-success" role="alert">
-					<h4 class="alert-heading">Error</h4>
 					<ul>
-						@foreach (session()->has('success') as $message)
+						@foreach (session()->get('success') as $message)
 						<li>{{ $message }}</li>
 						@endforeach
 					</ul>
