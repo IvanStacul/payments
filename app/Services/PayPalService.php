@@ -8,7 +8,7 @@ class PayPalService
 {
 	use ConsumesExternalServices;
 
-	protected $baseUrl;
+	protected $baseUri;
 
 	protected $clientId;
 
@@ -16,18 +16,25 @@ class PayPalService
 
 	public function __construct()
 	{
-		$this->baseUrl = config('services.paypal.base_url');
+		$this->baseUri = config('services.paypal.base_uri');
 		$this->clientId = config('services.paypal.client_id');
 		$this->clientSecret = config('services.paypal.client_secret');
 	}
 
 	public function resolveAuthorization(&$queryParams, &$formParams, &$headers)
 	{
-		//
+		$headers['Authorization'] = $this->resolveAccessToken();
 	}
 
 	public function decodeResponse($response)
 	{
-		//
+		return json_decode($response);
+	}
+
+	public function resolveAccessToken()
+	{
+		$credentials = base64_encode("{$this->clientId}:{$this->clientSecret}");
+
+		return "Basic {$credentials}";
 	}
 }
