@@ -19,7 +19,11 @@ Route::get('/', function () {
 	return view('welcome');
 });
 
-Auth::routes();
+Auth::routes([
+	'confirm' => false,
+	'register' => false,
+	'reset' => false,
+]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
