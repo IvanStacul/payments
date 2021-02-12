@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Currency;
 use App\Traits\ConsumesExternalServices;
 use Illuminate\Http\Request;
 
@@ -92,7 +93,7 @@ class PayPalService
 					0 => [
 						'amount' => [
 							'currency_code' => strtoupper($currency),
-							'value' => $value,
+							'value' => round($value * $factor = $this->resolveFactor($currency)) / $factor,
 						]
 					]
 				],
@@ -120,5 +121,16 @@ class PayPalService
 				'Content-Type' => 'application/json',
 			],
 		);
+	}
+
+	public function resolveFactor($currency)
+	{
+		$zeroDecimalCurrencies = Currency::where('zeroDecimal', true)->pluck('iso')->toArray();
+
+		if (in_array($currency, $zeroDecimalCurrencies)) {
+			return 1;
+		}
+
+		return 100;
 	}
 }

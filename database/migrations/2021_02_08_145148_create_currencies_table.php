@@ -15,6 +15,7 @@ class CreateCurrenciesTable extends Migration
 	{
 		Schema::create('currencies', function (Blueprint $table) {
 			$table->string('iso',3)->primary();
+			$table->boolean('zeroDecimal')->default(false); # false = la moneda acepta decimales en el monto
 			$table->timestamps();
 		});
 	}
